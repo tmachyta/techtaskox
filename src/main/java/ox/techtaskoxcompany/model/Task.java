@@ -36,7 +36,7 @@ public class Task {
     private Status status;
     private LocalDate deadline;
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "contact_id")
     private Contact contact;
     @Column(name = "is_deleted")
     private boolean isDeleted;
