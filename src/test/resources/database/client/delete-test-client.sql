@@ -1,0 +1,1 @@
+DELETE FROM clients WHERE name = 'client1' AND field = 'field' AND address = 'address'

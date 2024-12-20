@@ -1,0 +1,1 @@
+DELETE FROM contacts WHERE name = 'contact1' AND last_name = 'contact1' AND email = 'test@gmail.com' AND phone = '38043223' AND client_id = 1

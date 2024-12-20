@@ -1,0 +1,1 @@
+DELETE FROM tasks WHERE description = 'test' AND status = 'OPEN' AND deadline = '2024-12-25' AND contact_id = 1
