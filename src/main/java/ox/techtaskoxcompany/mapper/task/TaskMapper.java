@@ -10,6 +10,7 @@ import ox.techtaskoxcompany.model.Task;
 @Mapper(config = MapperConfig.class)
 public interface TaskMapper {
 
+    @Mapping(source = "contact.id", target = "contactId")
     TaskDto toDto(Task task);
 
     @Mapping(target = "id", ignore = true)

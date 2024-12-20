@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,21 +33,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ox.techtaskoxcompany.dto.contact.ContactDto;
-import ox.techtaskoxcompany.dto.contact.CreateContactRequestDto;
+import ox.techtaskoxcompany.dto.task.CreateTaskRequestDto;
+import ox.techtaskoxcompany.dto.task.TaskDto;
+import ox.techtaskoxcompany.model.Task;
+import ox.techtaskoxcompany.model.Task.Status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ContactControllerTest {
+class TaskControllerTest {
     protected static MockMvc mockMvc;
     private static final Long DEFAULT_ID = 1L;
     private static final Long SECOND_ID = 2L;
-    private static final Long CLIENT_ID = 1L;
-    private static final String FIRST_NAME = "contact1";
-    private static final String SECOND_NAME = "contact2";
-    private static final String EMAIL = "test@gmail.com";
-    private static final String FIRST_LAST_NAME = "contact1";
-    private static final String SECOND_LAST_NAME = "contact2";
-    private static final String PHONE = "38043223";
+    private static final Long CONTACT_ID = 1L;
+    private static final String DESCRIPTION = "test";
+    private static final Status STATUS_OPEN = Status.OPEN;
+    private static final Status STATUS_IN_PROGRESS = Status.IN_PROGRESS;
+    private static final LocalDate DEADLINE = LocalDate.parse("2024-12-25");
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -74,6 +75,13 @@ class ContactControllerTest {
                     new ClassPathResource("database/contact/add-default-contacts.sql")
             );
         }
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(true);
+            ScriptUtils.executeSqlScript(
+                    connection,
+                    new ClassPathResource("database/task/add-default-tasks.sql")
+            );
+        }
     }
 
     @AfterAll
@@ -85,6 +93,13 @@ class ContactControllerTest {
 
     @SneakyThrows
     static void teardown(DataSource dataSource) {
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(true);
+            ScriptUtils.executeSqlScript(
+                    connection,
+                    new ClassPathResource("database/task/delete-from-tasks.sql")
+            );
+        }
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(
@@ -103,39 +118,37 @@ class ContactControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    @Sql(
-            scripts = "classpath:database/contact/delete-test-contact.sql",
+    /*@Sql(
+            scripts = "classpath:database/task/delete-test-task.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )
-    @DisplayName("Create a new contact")
-    void createContact_ValidRequest_Success() throws Exception {
-        CreateContactRequestDto request = createContactRequestDto(
-                FIRST_NAME,
-                FIRST_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
+    )*/
+    @DisplayName("Create a new task")
+    void createTask_ValidRequest_Success() throws Exception {
+        CreateTaskRequestDto request = createTaskRequestDto(
+                DESCRIPTION,
+                STATUS_OPEN,
+                DEADLINE,
+                CONTACT_ID
         );
 
-        ContactDto expected = createExpectedContactDto(
+        TaskDto expected = createExpectedDto(
                 DEFAULT_ID,
-                FIRST_NAME,
-                FIRST_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
+                DESCRIPTION,
+                STATUS_OPEN,
+                DEADLINE,
+                CONTACT_ID
         );
 
         String jsonRequest = objectMapper.writeValueAsString(request);
 
-        MvcResult result = mockMvc.perform(post("/contacts")
+        MvcResult result = mockMvc.perform(post("/tasks")
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ContactDto actual = objectMapper.readValue(result.getResponse()
-                .getContentAsString(), ContactDto.class);
+        TaskDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), TaskDto.class);
 
         assertNotNull(actual);
         assertNotNull(actual.getId());
@@ -144,68 +157,65 @@ class ContactControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    @Sql(
-            scripts = "classpath:database/contact/delete-from-contacts.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(
-            scripts = "classpath:database/contact/add-default-contacts.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @DisplayName("Get list of contacts")
-    void getAll_GivenContactsInCatalog() throws Exception {
-        ContactDto firstContact = createExpectedContactDto(
+    @DisplayName("Get list of tasks")
+    void getAll_GivenTasksInCatalog() throws Exception {
+        TaskDto firstTask = createExpectedDto(
                 DEFAULT_ID,
-                FIRST_NAME,
-                FIRST_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
+                DESCRIPTION,
+                STATUS_OPEN,
+                DEADLINE,
+                CONTACT_ID
         );
 
-        ContactDto secondContact = createExpectedContactDto(
+        TaskDto secondTask = createExpectedDto(
                 SECOND_ID,
-                SECOND_NAME,
-                SECOND_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
+                DESCRIPTION,
+                STATUS_OPEN,
+                DEADLINE,
+                CONTACT_ID
         );
 
-        List<ContactDto> expected = new ArrayList<>();
-        expected.add(firstContact);
-        expected.add(secondContact);
-        MvcResult result = mockMvc.perform(get("/contacts")
+        List<TaskDto> expected = new ArrayList<>();
+        expected.add(firstTask);
+        expected.add(secondTask);
+        MvcResult result = mockMvc.perform(get("/tasks")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ContactDto[] actual = objectMapper.readValue(result.getResponse()
-                .getContentAsByteArray(), ContactDto[].class);
+        TaskDto[] actual = objectMapper.readValue(result.getResponse()
+                .getContentAsByteArray(), TaskDto[].class);
         Assertions.assertEquals(expected, Arrays.stream(actual).toList());
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @Sql(
+            scripts = "classpath:database/task/delete-from-tasks.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Sql(
+            scripts = "classpath:database/task/add-default-tasks.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
     @DisplayName("Get contact by id")
-    void getContactById() throws Exception {
+    void getTaskById() throws Exception {
 
-        ContactDto expected = createExpectedContactDto(
+        TaskDto expected = createExpectedDto(
                 DEFAULT_ID,
-                FIRST_NAME,
-                FIRST_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
+                DESCRIPTION,
+                STATUS_OPEN,
+                DEADLINE,
+                CONTACT_ID
         );
 
-        MvcResult result = mockMvc.perform(get("/contacts/{id}", DEFAULT_ID)
+        MvcResult result = mockMvc.perform(get("/tasks/{id}", DEFAULT_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ContactDto actual = objectMapper.readValue(result.getResponse()
-                .getContentAsString(), ContactDto.class);
+        TaskDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), TaskDto.class);
 
         assertNotNull(actual);
         assertNotNull(actual.getId());
@@ -214,9 +224,9 @@ class ContactControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    @DisplayName("Soft-Delete contact by id")
+    @DisplayName("Soft-Delete task by id")
     void testDeleteById() throws Exception {
-        MvcResult result = mockMvc.perform(delete("/contacts/{id}", DEFAULT_ID)
+        MvcResult result = mockMvc.perform(delete("/tasks/{id}", DEFAULT_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -226,98 +236,67 @@ class ContactControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @DisplayName("Update client id")
     void updateClientId() throws Exception {
-        CreateContactRequestDto request = updateClientContactById(CLIENT_ID);
+        CreateTaskRequestDto request = updateContactTaskById(CONTACT_ID);
 
-        ContactDto updatedContact = createExpectedContactDto(
+        TaskDto updatedTask = createExpectedDto(
                 SECOND_ID,
-                FIRST_NAME,
-                FIRST_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
+                DESCRIPTION,
+                STATUS_OPEN,
+                DEADLINE,
+                CONTACT_ID
         );
 
         String jsonRequest = objectMapper.writeValueAsString(request);
 
-        MvcResult result = mockMvc.perform(put("/contacts/client/{id}", SECOND_ID)
+        MvcResult result = mockMvc.perform(put("/tasks/contact/{id}", SECOND_ID)
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ContactDto actual = objectMapper.readValue(result.getResponse()
-                .getContentAsString(), ContactDto.class);
+        TaskDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), TaskDto.class);
 
         assertNotNull(actual);
         assertNotNull(actual.getId());
-        EqualsBuilder.reflectionEquals(updatedContact, actual, "id");
+        EqualsBuilder.reflectionEquals(updatedTask, actual, "id");
     }
 
-    @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
-    @DisplayName("Search contacts by parameters")
-    void searchContacts_GivenSearchParameters() throws Exception {
-        ContactDto firstContact = createExpectedContactDto(
-                DEFAULT_ID,
-                FIRST_NAME,
-                FIRST_LAST_NAME,
-                EMAIL,
-                PHONE,
-                CLIENT_ID
-        );
-
-        List<ContactDto> expected = List.of(firstContact);
-
-        String[] names = {FIRST_NAME};
-        String[] lastNames = {FIRST_LAST_NAME};
-
-        MvcResult result = mockMvc.perform(get("/contacts/search")
-                        .param("names", FIRST_NAME)
-                        .param("last_names", FIRST_LAST_NAME)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ContactDto[] actual = objectMapper.readValue(result.getResponse()
-                .getContentAsByteArray(), ContactDto[].class);
-
-        Assertions.assertEquals(expected, Arrays.stream(actual).toList());
-    }
-
-    private ContactDto createExpectedContactDto(
+    private TaskDto createExpectedDto(
             Long id,
-            String name,
-            String lastName,
-            String email,
-            String phone,
-            Long clientId
+            String description,
+            Task.Status status,
+            LocalDate deadline,
+            Long contactId
     ) {
-        return new ContactDto()
+        return new TaskDto()
                 .setId(id)
-                .setName(name)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhone(phone)
-                .setClientId(clientId);
+                .setDescription(description)
+                .setStatus(status)
+                .setDeadline(deadline)
+                .setContactId(contactId);
     }
 
-    private CreateContactRequestDto createContactRequestDto(
-            String name,
-            String lastName,
-            String email,
-            String phone,
-            Long clientId
+    private CreateTaskRequestDto createTaskRequestDto(
+            String description,
+            Task.Status status,
+            LocalDate deadline,
+            Long contactId
     ) {
-        return new CreateContactRequestDto()
-                .setName(name)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhone(phone)
-                .setClientId(clientId);
+        return new CreateTaskRequestDto()
+                .setDescription(description)
+                .setStatus(status)
+                .setDeadline(deadline)
+                .setContactId(contactId);
     }
 
-    private CreateContactRequestDto updateClientContactById(Long clientId) {
-        return new CreateContactRequestDto()
-                .setClientId(clientId);
+    private CreateTaskRequestDto updateContactTaskById(Long contactId) {
+        return new CreateTaskRequestDto()
+                .setContactId(contactId);
+    }
+
+    private CreateTaskRequestDto updateTaskStatusById(Status status) {
+        return new CreateTaskRequestDto()
+                .setStatus(status);
     }
 }
