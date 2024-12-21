@@ -17,7 +17,6 @@ function handleGetTasks() {
                     <td>${task.deadline}</td>
                     <td>${task.status}</td>
                     <td>
-                    <button class="edit-btn" onclick="window.location.href = ''">Edit</button>
                     <button class="delete-btn" onclick="handleDeleteTask(${task.id})">Delete</button>
                     </td>
                 `;

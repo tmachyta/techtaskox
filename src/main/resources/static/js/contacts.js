@@ -17,7 +17,6 @@ function handleGetContacts() {
                     <td>${contact.email}</td>
                     <td>${contact.phone}</td>
                     <td>
-                        <button class="edit-btn" onclick="window.location.href = '${contact.id}'">Edit</button>
                         <button class="delete-btn" onclick="handleDeleteContact(${contact.id})">Edit</button>
                     </td>
                 `;

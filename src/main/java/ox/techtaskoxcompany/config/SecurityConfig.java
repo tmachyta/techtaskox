@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/images/**", "/js/**",
                                         "/css/**", "/webjars/**", "/ws/**",
-                                        "/login-registration")
+                                        "/auth/login-registration")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
