@@ -1,4 +1,3 @@
-
 function handleAddClient(event) {
     event.preventDefault();
 

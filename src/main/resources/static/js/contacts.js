@@ -1,4 +1,3 @@
-
 function handleGetContacts() {
     fetch('/contacts', {
         method: 'GET',

@@ -9,7 +9,6 @@ function handleLogin(event) {
         password: password
     };
 
-    // Виконуємо запит на сервер
     fetch('/auth/login', {
         method: 'POST',
         headers: {
