@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/form.css"/>
+    <title>Create Contact</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/main-page">Main</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="forms-container">
+        <form id="createContactForm" class="create-contact-form">
+            <h2 class="title">Create New Contact</h2>
+
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" id="contact-name" name="name" placeholder="First Name" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" id="contact-lastname" name="lastName" placeholder="Last Name" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="contact-email" name="email" placeholder="Email" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="contact-phone" name="phone" placeholder="Phone" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-building"></i>
+                <input type="number" id="client-id" name="clientId" placeholder="Client ID" required />
+            </div>
+
+            <input type="submit" class="btn" value="Create Contact" />
+        </form>
+    </div>
+</div>
+
+<script src="/js/addcontact.js"></script>
+</body>
+</html>

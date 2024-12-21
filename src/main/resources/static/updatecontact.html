@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Contact Details</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/js/updatecontact.js" defer></script>
+</head>
+<body>
+<div class="container" style="margin-top: 50px">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Update Contact Details</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form id="update-contact-form">
+                <div class="form-group">
+                    <label for="contact-id">Contact ID</label>
+                    <input type="text" id="contact-id" class="form-control" placeholder="Enter Contact ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-name">Name</label>
+                    <input type="text" id="contact-name" class="form-control" placeholder="Enter Contact Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-lastname">Last Name</label>
+                    <input type="text" id="contact-lastname" class="form-control" placeholder="Enter Contact Last Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" class="form-control" placeholder="Enter Contact Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-phone">Phone</label>
+                    <input type="tel" id="contact-phone" class="form-control" placeholder="Enter Contact Phone" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Contact</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

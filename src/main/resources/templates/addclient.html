@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/form.css"/>
+    <title>Create Client</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/main-page">Main</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="forms-container">
+        <form id="createClientForm" class="create-client-form">
+            <h2 class="title">Create New Client</h2>
+
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" id="client-name" name="client_name" placeholder="Client Name" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-industry"></i>
+                <input type="text" id="client-industry" name="client_industry" placeholder="Industry" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" id="client-address" name="client_address" placeholder="Address" required />
+            </div>
+
+            <input type="submit" class="btn" value="Create Client" />
+        </form>
+    </div>
+</div>
+
+<script src="/js/addclient.js"></script>
+</body>
+</html>

@@ -45,7 +45,8 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/**")
                                 .permitAll()
                                 .requestMatchers("/images/**", "/js/**",
-                                        "/css/**", "/webjars/**")
+                                        "/css/**", "/webjars/**", "/ws/**",
+                                        "/login-registration")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -64,7 +65,7 @@ public class SecurityConfig {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://wod-warrior.online");
+        config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
