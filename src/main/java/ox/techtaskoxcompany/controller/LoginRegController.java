@@ -6,11 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/auth")
-public class FunctionalController {
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
+public class LoginRegController {
 
     @GetMapping("/login-registration")
     public String login() {
