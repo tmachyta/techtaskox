@@ -76,7 +76,7 @@ To connect to your DB, you should replace PlaceHolders in application.properties
 
 ## Notification 📫
 - Send notification about changing task status
-- Send notification about changin task contact
+- Send notification about changing task contact
 
 ## Controllers 🕹
 
