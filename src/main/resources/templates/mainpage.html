@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <title>Welcome Page</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/contacts">Contacts</a></li>
+            <li><a href="/clients">Clients</a></li>
+            <li><a href="/tasks">Tasks</a></li>
+            <li><a href="/status.html">Messages</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-content">
+    <h1>Welcome to Your Dashboard!</h1>
+    <p>Here you can manage your contacts, clients, and tasks.</p>
+
+    <div class="cards-container">
+        <div class="card">
+            <h2>Clients</h2>
+            <ul>
+                <li><a href="/add-client">Add a new client</a></li>
+                <li><a href="/clientslist.html">View all clients</a></li>
+                <li>
+                    <form id="find-client-form">
+                        <input type="number" id="client-id" name="clientId" placeholder="Enter Client ID" required />
+                        <button type="submit" class="btn">Find Client</button>
+                    </form>
+                </li>
+                <form id="search-client-form">
+                    <input type="text" id="client-name" placeholder="Enter client name" required>
+                    <button type="submit">Search</button>
+                </form>
+                <li><a href="/updateclient.html">Update Client</a></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Contacts</h2>
+            <ul>
+                <li><a href="/add-contact">Add a new contact</a></li>
+                <li><a href="/contactlist.html">View all contacts</a></li>
+                <li>
+                    <form id="find-contact-form">
+                        <input type="number" id="contact-id" name="contactId" placeholder="Enter Contact ID" required />
+                        <button type="submit" class="btn">Find Contact</button>
+                    </form>
+                </li>
+                <form id="search-contact-form">
+                    <input type="text" id="contact-name" placeholder="Enter contact name" required>
+                    <button type="submit">Search</button>
+                </form>
+                <li><a href="/updatecontact.html">Update Contact</a></li>
+                <li><a href="/updatecontactclient.html">Update Contact Client</a></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Tasks</h2>
+            <ul>
+                <li><a href="/add-task">Add a new task</a></li>
+                <li><a href="/taskslist.html">View all tasks</a></li>
+                <li>
+                    <form id="find-task-form">
+                        <input type="number" id="task-id" name="taskId" placeholder="Enter Task ID" required />
+                        <button type="submit" class="btn">Find Task</button>
+                    </form>
+                </li>
+                <li><a href="/status.html">Update Task Status</a></li>
+                <li><a href="/contacttask.html">Update Task Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 SalesSync</p>
+</footer>
+
+<script src="/js/findbyid.js"></script>
+<script src="/js/searchform.js"></script>
+</body>
+</html>

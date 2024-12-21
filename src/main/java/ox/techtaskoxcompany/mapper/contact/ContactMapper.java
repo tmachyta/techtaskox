@@ -10,7 +10,7 @@ import ox.techtaskoxcompany.model.Contact;
 @Mapper(config = MapperConfig.class)
 public interface ContactMapper {
     @Mapping(source = "client.id", target = "clientId")
-    ContactDto toDto(Contact client);
+    ContactDto toDto(Contact contact);
 
     @Mapping(target = "id", ignore = true)
     Contact toModel(CreateContactRequestDto request);

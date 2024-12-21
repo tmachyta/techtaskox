@@ -12,6 +12,7 @@ import ox.techtaskoxcompany.model.Contact;
 import ox.techtaskoxcompany.model.Task;
 import ox.techtaskoxcompany.repository.contact.ContactRepository;
 import ox.techtaskoxcompany.repository.task.TaskRepository;
+import ox.techtaskoxcompany.service.notification.NotificationService;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
     private final ContactRepository contactRepository;
+    private final NotificationService notificationService;
 
     @Override
     public TaskDto save(CreateTaskRequestDto requestDto) {
@@ -69,6 +71,7 @@ public class TaskServiceImpl implements TaskService {
                         + requestDto.getContactId()));
 
         existedTask.setContact(contact);
+        notificationService.sendNotificationAboutContact(existedTask.getId(), contact.getId());
         return taskMapper.toDto(taskRepository.save(existedTask));
     }
 
@@ -77,6 +80,8 @@ public class TaskServiceImpl implements TaskService {
         Task existedTask = taskRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find contact by id " + id));
         existedTask.setStatus(requestDto.getStatus());
+        notificationService.sendNotificationAboutStatus(existedTask.getId(),
+                requestDto.getStatus());
         return taskMapper.toDto(taskRepository.save(existedTask));
     }
 }

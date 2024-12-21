@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/form.css"/>
+    <title>Update Task</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/main-page">Home</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="forms-container">
+        <form id="updateTaskForm" class="create-task-form">
+            <h2 class="title">Update Task</h2>
+
+            <!-- Hidden field to store taskId -->
+            <input type="hidden" id="task-id" name="taskId" />
+
+            <div class="input-field">
+                <i class="fas fa-tasks"></i>
+                <input type="text" id="task-description" name="description" placeholder="Task Description" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-calendar-alt"></i>
+                <input type="date" id="task-deadline" name="deadline" required />
+            </div>
+            <div class="input-field">
+                <i class="fas fa-list-alt"></i>
+                <select id="task-status" name="status" required>
+                    <option value="PENDING">Pending</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <i class="fas fa-id-badge"></i>
+                <input type="number" id="contact-id" name="contactId" placeholder="Contact ID" required />
+            </div>
+
+            <input type="submit" class="btn" value="Update Task" />
+        </form>
+    </div>
+</div>
+
+<script src="/js/tasks.js"></script>
+</body>
+</html>

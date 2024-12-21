@@ -24,6 +24,7 @@ import ox.techtaskoxcompany.model.Task;
 import ox.techtaskoxcompany.model.Task.Status;
 import ox.techtaskoxcompany.repository.contact.ContactRepository;
 import ox.techtaskoxcompany.repository.task.TaskRepository;
+import ox.techtaskoxcompany.service.notification.NotificationService;
 
 @ExtendWith(MockitoExtension.class)
 class TaskServiceImplTest {
@@ -43,6 +44,9 @@ class TaskServiceImplTest {
 
     @Mock
     private TaskMapper taskMapper;
+
+    @Mock
+    private NotificationService notificationService;
 
     @InjectMocks
     private TaskServiceImpl taskService;
