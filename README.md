@@ -21,8 +21,7 @@ Make sure you have the following software installed on your system:
 - Spring Boot 3.4.1 or higher
 - Apache Maven
 - Apache Tomcat vesion 9 or higher
-- DataBase: MySQL
-- docker
+- DataBase: Postgres
 
 ### Installation
 - First of all, you should made your fork
@@ -30,28 +29,14 @@ Make sure you have the following software installed on your system:
 - past link, which you clone later
 
 ### Replace Placeholders:
-To connect to your DB, you should replace PlaceHolders in .env
-- Open package resources and open file env in your project.
+To connect to your DB, you should replace PlaceHolders in application.properties
+- Open package resources and open file application.properties in your project.
 - Locate the placeholders that need to be replaced.
 - These placeholders might include values such as
-- MYSQL_USER= YOUR_USERNAME -> replace with your MySQL_DB
-- MYSQL_PASSWORD=YOUR_PASSWORD -> replace with your password to your MySQL_DB
-- MYSQL_LOCAL_PORT=YOUR_LOCAL_PORT -> replace with your local port
-- MYSQL_DOCKER_PORT=YOUR_DOCKER_PORT -> replace with your docker port
-- SPRING_LOCAL_PORT=YOUR_SPRING_LOCAL_PORT -> replace with your spring local port
-- SPRING_DOCKER_PORT=YOUR_DOCKER_PORT -> replace with your docker port
-- DEBUG_PORT=5006
-
+- jdbc:postgresql://postgresdb:$HOST/$DB -> Change HOST to your host and DB to your DB name
+- $POSTGRES_USER -> Change to your username to DB
+- $POSTGRES_PASSWORD -> Change to your password to DB
   
-
-### Docker:
-- First of all, open your terminal and write command mvn clean package
-- Then in terminal write docker-compose build
-- After that write in terminal docker-compose up
-- And project will start
-
-  
-
 # Features 🤌:
 
 ## User 🤵‍♂️
